@@ -13,6 +13,7 @@ import java.util.LinkedList;
 public final class UseListsAndMaps {
 
     private static final double ELEMS = 100_000;
+    private static final int ELEMSREAD = 1_000;
 
     private UseListsAndMaps() {
     }
@@ -93,7 +94,25 @@ public final class UseListsAndMaps {
          * times, use as example TestPerformance.java.
          */
 
+        time = System.nanoTime();
+        
+        for (int i=0;i<ELEMSREAD-1;i++) {
+            alist.get(alist.size()/2);
+        }
 
+        time = System.nanoTime() - time;
+        millis = TimeUnit.NANOSECONDS.toMillis(time);
+        System.out.println("Read " + ELEMSREAD + " in the middle of an ArrayList took us " + time + " ns " + millis + " ms");
+
+        time=System.nanoTime();
+
+        for (int i=0;i<ELEMSREAD-1;i++) {
+            linkedlist.get(linkedlist.size()/2);
+        }
+
+        time = System.nanoTime() - time;
+        millis = TimeUnit.NANOSECONDS.toMillis(time);
+        System.out.println("Read " + ELEMSREAD + " in the middle of a LinkedList took us " + time + " ns " + millis + " ms ");
 
         /*
          * 7) Build a new Map that associates to each continent's name its
