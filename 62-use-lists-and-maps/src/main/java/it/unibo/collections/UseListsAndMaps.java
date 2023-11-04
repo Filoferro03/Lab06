@@ -149,5 +149,11 @@ public final class UseListsAndMaps {
         /*
          * 8) Compute the population of the world
          */
+
+        long worldPopulation = 0L;
+        for (long continentPopulation : worldMap.values() ) {
+            worldPopulation =+ continentPopulation;
+        }
+        System.out.println("World population is " + worldPopulation + " inhabitants");
     }
 }
