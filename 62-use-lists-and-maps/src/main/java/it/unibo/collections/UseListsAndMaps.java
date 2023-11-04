@@ -2,12 +2,17 @@ package it.unibo.collections;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Example class using {@link List} and {@link Map}.
  *
  */
 public final class UseListsAndMaps {
+
+    private static final double ELEMS = 100_000;
 
     private UseListsAndMaps() {
     }
@@ -22,10 +27,9 @@ public final class UseListsAndMaps {
          * from 1000 (included) to 2000 (excluded).
          */
 
-
-        List<Integer> l1 = new ArrayList<>();
+        List<Integer> alist = new ArrayList<>();
         for (int i=1000;i<2000;i++) {
-            l1.add(i);
+            alist.add(i);
         }
 
         /*
@@ -34,7 +38,7 @@ public final class UseListsAndMaps {
          * the same contents of the list of point 1.
          */
 
-        List<Integer> l2 = new LinkedList<>(List.copyof(l1));
+        List<Integer> linkedlist = new LinkedList<>(alist);
 
 
         /*
@@ -43,16 +47,16 @@ public final class UseListsAndMaps {
          * (Suggestion: use a temporary variable)
          */
 
-        int temp=l1.get(0);
-        l1.set (0,l1.get(l1.size()-1));
-        l1.set (l1.get(l1.size()-1), temp);
+        final int temp = alist.get(alist.size()-1);
+        alist.set(alist.size()-1, alist.get(0));
+        alist.set(0,temp);
 
         /*
          * 4) Using a single for-each, print the contents of the arraylist.
          */
 
-        for (int i : l1) {
-            System.out.println (i + " \n");
+        for (int i : alist) {
+            System.out.println (i + " ");
         }
 
         /*
@@ -63,38 +67,24 @@ public final class UseListsAndMaps {
          * TestPerformance.java.
          */
 
-        private final double ELEMS = 100_000;
-        final Set<String> set = new TreeSet<>();
         long time = System.nanoTime();
         
-        for (int i=0;i<ELEMS;i++) {
-            l1.add(i);
+        for (int i=0;i<ELEMS-1;i++) {
+            alist.add(0, i);
         }
         time = System.nanoTime() - time;
-        final var millis = TimeUnit.NANOSECONDS.toMillis(time);
-        System.out.println(
-            "Add " + ELEMS + "in a ArrayList took us "
-                + time
-                + "ns ("
-                + millis
-                + "ms)"
-        );
+        var millis = TimeUnit.NANOSECONDS.toMillis(time);
+        System.out.println("Add " + ELEMS + " as first in a ArrayList took us " + time + " ns " + millis + " ms");
 
         time=System.nanoTime();
 
-        for (int i=0;i<ELEMS;i++) {
-            l2.add(i);
+        for (int i=0;i<ELEMS-1;i++) {
+            linkedlist.add(0, i);
         }
 
         time = System.nanoTime() - time;
         millis = TimeUnit.NANOSECONDS.toMillis(time);
-        System.out.println(
-            "Add " + ELEMS + " in a LinkedList took us "
-                + time
-                + "ns ("
-                + millis
-                + "ms)"
-        );
+        System.out.println("Add " + ELEMS + " as first in a LinkedList took us " + time + " ns " + millis + " ms ");
 
         /*
          * 6) Measure the performance of reading 1000 times an element whose
@@ -103,7 +93,7 @@ public final class UseListsAndMaps {
          * times, use as example TestPerformance.java.
          */
 
-        
+
 
         /*
          * 7) Build a new Map that associates to each continent's name its
